@@ -1,8 +1,8 @@
 package com.example.unsplashproject.feature.data.dto.mappers
 
+import com.example.unsplashproject.db.entity.Image
 import com.example.unsplashproject.feature.data.dto.json_image_model.ImagesRemoteDTO
 import com.example.unsplashproject.feature.data.dto.json_search_model.SearchImagesRemoteDTO
-import com.example.unsplashproject.feature.domain.entity.Image
 
 fun ImagesRemoteDTO.toDomainModel(): ArrayList<Image> {
 
