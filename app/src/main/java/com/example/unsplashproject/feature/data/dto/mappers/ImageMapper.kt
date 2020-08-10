@@ -1,30 +1,39 @@
 package com.example.unsplashproject.feature.data.dto.mappers
 
-import com.example.unsplashproject.db.entity.Image
-import com.example.unsplashproject.feature.data.dto.json_image_model.ImagesRemoteDTO
-import com.example.unsplashproject.feature.data.dto.json_search_model.SearchImagesRemoteDTO
 
-fun ImagesRemoteDTO.toDomainModel(): ArrayList<Image> {
+import com.example.unsplashproject.feature.data.dto.json_image_model.ImageRemoteItem
+import com.example.unsplashproject.feature.data.dto.json_search_model.SearchResult
+import com.example.unsplashproject.feature.domain.entity.Image
 
-    val domainImageList = ArrayList<Image>()
-
-    for (image in this) {
-        domainImageList.add(
-            Image(
-                id = image.id,
-                created_at = image.created_at,
-                likes = image.likes,
-                description = image.alt_description,
-                username = image.user.name,
-                thumb_url = image.urls.thumb,
-                full_url = image.urls.full
-            )
-        )
-    }
-
-    return domainImageList;
+fun ImageRemoteItem.toDomainModel(): Image {
+    val location = if (user.location == null) "Not specified" else user.location.toString()
+    return Image(
+        id = id,
+        created_at = created_at,
+        description = alt_description,
+        likes = likes,
+        thumb_url = urls.thumb,
+        full_url = urls.regular,
+        username = user.username,
+        name = user.name,
+        location = location,
+        user_photo_url = user.profile_image.small
+    )
 }
 
-fun SearchImagesRemoteDTO.toDomainModel(): ArrayList<Image> {
-    return results.toDomainModel();
+fun SearchResult.toDomainModel(): Image{
+    val location = if (user.location == null) "Not specified" else user.location.toString()
+    return Image(
+        id = id,
+        created_at = created_at,
+        description = alt_description,
+        likes = likes,
+        thumb_url = urls.thumb,
+        full_url = urls.regular,
+        username = user.username,
+        name = user.name,
+        location = location,
+        user_photo_url = user.profile_image.small
+    )
 }
+

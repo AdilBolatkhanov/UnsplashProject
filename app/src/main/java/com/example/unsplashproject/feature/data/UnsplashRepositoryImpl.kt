@@ -1,31 +1,62 @@
 package com.example.unsplashproject.feature.data
 
-import android.provider.MediaStore
-import com.example.unsplashproject.api.UnsplashApi
-import com.example.unsplashproject.db.entity.Image
-import com.example.unsplashproject.feature.data.dto.mappers.toDomainModel
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
+import com.example.unsplashproject.api.LATEST
+import com.example.unsplashproject.feature.data.local.ImagesLocalDataSource
+import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.domain.UnsplashRepository
+import com.example.unsplashproject.feature.domain.entity.Image
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
+
+const val PER_PAGE = 30
 
 class UnsplashRepositoryImpl(
-    private val unsplashApi: UnsplashApi
+    private val remoteDataSource: ImagesRemoteDataSource,
+    private val localDataSource: ImagesLocalDataSource
 ) : UnsplashRepository {
-    override suspend fun getImagesByLatest(): List<Image> {
-       return unsplashApi.getImagesByLatest().toDomainModel()
+    private val config = PagedList.Config.Builder()
+            .setPageSize(PER_PAGE)
+            .setEnablePlaceholders(false)
+            .build()
+    private val boundaryCallback =
+        ImagesBoundaryCallback(
+            remoteDataSource,
+            localDataSource
+        )
+
+    override fun getImages(): LiveData<PagedList<Image>> {
+        return localDataSource.getAllImagesByPage()
+            .toLiveData(
+                config = config,
+                boundaryCallback = boundaryCallback,
+                fetchExecutor = Executors.newFixedThreadPool(5)
+            )
     }
 
-    override suspend fun getImagesByOldest(): List<Image> {
-        return unsplashApi.getImagesByOldest().toDomainModel()
+    override fun updateImages(): LiveData<PagedList<Image>> {
+        boundaryCallback.update()
+        return getImages()
     }
 
-    override suspend fun getImagesByPopular(): List<Image> {
-        return unsplashApi.getImagesByPopular().toDomainModel()
+    override fun sortImages(sortBy: String): LiveData<PagedList<Image>> {
+        boundaryCallback.setSorting(sortBy)
+        return getImages()
     }
 
-    override suspend fun searchImagesByRelevance(query: String): List<Image> {
-        return unsplashApi.searchImagesByRelevance(query = query).toDomainModel()
+
+    override suspend fun searchImages(
+        clientId: String,
+        query: String,
+        page: Int,
+        perPage: Int,
+        orderBy: String
+    ): List<Image> {
+        return listOf()
     }
 
-    override suspend fun searchImagesByLatest(query: String): List<Image> {
-        return unsplashApi.searchImagesByLatest(query = query).toDomainModel()
-    }
 }

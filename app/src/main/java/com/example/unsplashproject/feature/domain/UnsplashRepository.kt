@@ -1,16 +1,18 @@
 package com.example.unsplashproject.feature.domain
 
-import com.example.unsplashproject.db.entity.Image
+import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import androidx.paging.PagedList
+import com.example.unsplashproject.feature.domain.entity.Image
 
 
 interface UnsplashRepository {
-    suspend fun getImagesByLatest() : List<Image>
+    fun getImages() : LiveData<PagedList<Image>>
 
-    suspend fun getImagesByOldest() : List<Image>
+    fun updateImages():  LiveData<PagedList<Image>>
 
-    suspend fun getImagesByPopular() : List<Image>
+    fun sortImages(sortBy: String): LiveData<PagedList<Image>>
 
-    suspend fun searchImagesByRelevance(query: String) : List<Image>
+    suspend fun searchImages(clientId: String,query: String, page: Int, perPage: Int, orderBy: String) : List<Image>
 
-    suspend fun searchImagesByLatest(query: String) : List<Image>
 }
