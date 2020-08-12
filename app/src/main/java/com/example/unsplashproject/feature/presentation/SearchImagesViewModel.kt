@@ -11,6 +11,8 @@ import com.example.unsplashproject.feature.domain.SortImagesUseCase
 import com.example.unsplashproject.feature.domain.SortSearchImagesUseCase
 import com.example.unsplashproject.feature.domain.UpdateSearchImagesUseCase
 import com.example.unsplashproject.feature.domain.entity.Image
+import java.lang.Exception
+import java.lang.IllegalArgumentException
 
 class SearchImagesViewModel(
     private val getSearchImagesUseCase: GetSearchImagesUseCase,
