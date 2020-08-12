@@ -35,7 +35,6 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
     private val viewModel: SearchImageViewModel by viewModel()
     private val adapter = ImagesAdapter(this)
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_activity)
@@ -62,7 +61,7 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
-    
+
     override fun onClick(photo: Image) {
         viewModel.onPhotoClicked(photo)
     }
@@ -125,7 +124,7 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
-    fun EditText.hideKeyboard() {
+    private fun EditText.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }

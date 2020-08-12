@@ -1,17 +1,15 @@
 package com.example.unsplashproject.feature.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.unsplashproject.R
 import com.example.unsplashproject.api.LATEST
@@ -41,17 +39,6 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
         observe()
     }
 
-    private fun listeners() {
-        swipeRefresh.setOnRefreshListener {
-            viewModel.updatePhotos()
-            swipeRefresh.isRefreshing = false
-        }
-
-        searchImageFAB.setOnClickListener {
-           viewModel.onSearchBtnClicked()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.sort_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -67,6 +54,17 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
 
     override fun onClick(photo: Image) {
         viewModel.onPhotoClicked(photo)
+    }
+
+    private fun listeners() {
+        swipeRefresh.setOnRefreshListener {
+            viewModel.updatePhotos()
+            swipeRefresh.isRefreshing = false
+        }
+
+        searchImageFAB.setOnClickListener {
+            viewModel.onSearchBtnClicked()
+        }
     }
 
     private fun showSortingPopupMenu(){
