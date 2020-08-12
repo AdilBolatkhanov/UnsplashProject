@@ -8,7 +8,7 @@ import com.example.unsplashproject.feature.data.dto.json_search_model.SearchResu
 interface ImagesRemoteDataSource {
     suspend fun getPhotos(clientId: String, page: Int, perPage:Int, orderBy: String):List<ImageRemoteItem>
 
-    suspend fun searchPhotos(clientId: String,query: String, page: Int, perPage: Int, orderBy: String): List<SearchResult>
+    suspend fun searchPhotos(clientId: String,query: String, page: Int, perPage: Int, orderBy: String): SearchRemoteDTO
 }
 
 class ImagesRemoteDataSourceImpl(
@@ -29,8 +29,8 @@ class ImagesRemoteDataSourceImpl(
         page: Int,
         perPage: Int,
         orderBy: String
-    ):List<SearchResult> {
-        return unsplashApi.searchImages(clientId, page, query, perPage,orderBy).results
+    ):SearchRemoteDTO {
+        return unsplashApi.searchImages(clientId, page, query, perPage,orderBy)
     }
 
 }

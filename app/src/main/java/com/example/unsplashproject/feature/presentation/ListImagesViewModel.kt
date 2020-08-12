@@ -24,6 +24,9 @@ class ListImagesViewModel(
     val nextActivity: LiveData<Image> get() = _nextActivity
     private val _nextActivity = MutableLiveData<Image>()
 
+    val searchActivity: LiveData<Boolean> get() = _searchActivity
+    private val _searchActivity = MutableLiveData<Boolean>()
+
     init {
         getPhotos {
             getImagesUseCase()
@@ -44,6 +47,10 @@ class ListImagesViewModel(
 
     fun onPhotoClicked(photo: Image){
         _nextActivity.value = photo
+    }
+
+    fun onSearchBtnClicked(){
+        _searchActivity.value = true
     }
 
     private fun getPhotos(action: () ->  LiveData<PagedList<Image>>){

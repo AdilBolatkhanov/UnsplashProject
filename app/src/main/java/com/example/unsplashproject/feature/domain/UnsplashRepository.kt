@@ -3,6 +3,7 @@ package com.example.unsplashproject.feature.domain
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.paging.PagedList
+import com.example.unsplashproject.api.RELEVANT
 import com.example.unsplashproject.feature.domain.entity.Image
 
 
@@ -13,6 +14,9 @@ interface UnsplashRepository {
 
     fun sortImages(sortBy: String): LiveData<PagedList<Image>>
 
-    suspend fun searchImages(clientId: String,query: String, page: Int, perPage: Int, orderBy: String) : List<Image>
+    fun searchImages(query: String) :LiveData<PagedList<Image>>
 
+    fun updateSearchImages():  LiveData<PagedList<Image>>
+
+    fun sortSearchImages(sortBy: String): LiveData<PagedList<Image>>
 }

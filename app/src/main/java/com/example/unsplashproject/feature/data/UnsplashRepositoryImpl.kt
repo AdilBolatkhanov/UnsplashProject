@@ -1,9 +1,11 @@
 package com.example.unsplashproject.feature.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.example.unsplashproject.api.LATEST
+import com.example.unsplashproject.api.RELEVANT
 import com.example.unsplashproject.feature.data.local.ImagesLocalDataSource
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.domain.UnsplashRepository
@@ -29,6 +31,9 @@ class UnsplashRepositoryImpl(
             localDataSource
         )
 
+    private var newQuery = ""
+    private var newOrder = RELEVANT
+
     override fun getImages(): LiveData<PagedList<Image>> {
         return localDataSource.getAllImagesByPage()
             .toLiveData(
@@ -48,15 +53,21 @@ class UnsplashRepositoryImpl(
         return getImages()
     }
 
+    override fun sortSearchImages(sortBy: String): LiveData<PagedList<Image>> {
+        newOrder = sortBy
+        return updateSearchImages()
+    }
 
-    override suspend fun searchImages(
-        clientId: String,
-        query: String,
-        page: Int,
-        perPage: Int,
-        orderBy: String
-    ): List<Image> {
-        return listOf()
+    override fun searchImages(
+        query: String
+    ): LiveData<PagedList<Image>> {
+        newQuery = query
+        return updateSearchImages()
+    }
+
+    override fun updateSearchImages(): LiveData<PagedList<Image>> {
+        val searchDataSourceFactory = SearchDataSourceFactory(remoteDataSource,newQuery,newOrder)
+        return LivePagedListBuilder<Int, Image>(searchDataSourceFactory, config).build()
     }
 
 }

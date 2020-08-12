@@ -7,19 +7,19 @@ data class SearchRemoteDTO(
 )
 
 data class SearchResult(
-    val alt_description: String,
-    val categories: List<Any>,
+    val alt_description: String?,
+    val categories: List<Any?>?,
     val color: String,
     val created_at: String,
-    val current_user_collections: List<Any>,
-    val description: String,
+    val current_user_collections: List<Any?>?,
+    val description: String?,
     val height: Int,
     val id: String,
     val liked_by_user: Boolean,
     val likes: Int,
     val links: Links,
-    val promoted_at: String,
-    val sponsorship: Any,
+    val promoted_at: String?,
+    val sponsorship: Any?,
     val tags: List<Tag>,
     val updated_at: String,
     val urls: Urls,
@@ -35,7 +35,7 @@ data class Links(
 )
 
 data class Tag(
-    val source: Source,
+    val source: Source?,
     val title: String,
     val type: String
 )
@@ -43,20 +43,20 @@ data class Tag(
 
 data class UserX(
     val accepted_tos: Boolean,
-    val bio: Any,
+    val bio: Any?,
     val first_name: String,
     val id: String,
     val instagram_username: String,
-    val last_name: String,
+    val last_name: String?,
     val links: LinksXX,
-    val location: Any,
+    val location: Any?,
     val name: String,
-    val portfolio_url: String,
+    val portfolio_url: String?,
     val profile_image: ProfileImage,
     val total_collections: Int,
     val total_likes: Int,
     val total_photos: Int,
-    val twitter_username: Any,
+    val twitter_username: Any?,
     val updated_at: String,
     val username: String
 )
@@ -78,19 +78,19 @@ data class Ancestry(
 )
 
 data class CoverPhoto(
-    val alt_description: String,
-    val categories: List<Any>,
+    val alt_description: String?,
+    val categories: List<Any?>?,
     val color: String,
     val created_at: String,
-    val current_user_collections: List<Any>,
-    val description: Any,
+    val current_user_collections: List<Any?>?,
+    val description: Any?,
     val height: Int,
     val id: String,
     val liked_by_user: Boolean,
     val likes: Int,
     val links: Links,
-    val promoted_at: Any,
-    val sponsorship: Any,
+    val promoted_at: Any?,
+    val sponsorship: Any?,
     val updated_at: String,
     val urls: Urls,
     val user: User,
@@ -124,20 +124,20 @@ data class Urls(
 
 data class User(
     val accepted_tos: Boolean,
-    val bio: String,
+    val bio: String?,
     val first_name: String,
     val id: String,
     val instagram_username: String,
     val last_name: String,
     val links: LinksXX,
-    val location: String,
+    val location: String?,
     val name: String,
-    val portfolio_url: String,
+    val portfolio_url: String?,
     val profile_image: ProfileImage,
     val total_collections: Int,
     val total_likes: Int,
     val total_photos: Int,
-    val twitter_username: Any,
+    val twitter_username: Any?,
     val updated_at: String,
     val username: String
 )

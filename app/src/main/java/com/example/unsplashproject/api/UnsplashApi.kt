@@ -32,5 +32,4 @@ interface UnsplashApi {
         @Query("order_by") order: String = RELEVANT) : SearchRemoteDTO
 
 
-
 }
