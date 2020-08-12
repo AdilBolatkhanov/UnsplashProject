@@ -1,12 +1,14 @@
 package com.example.unsplashproject.feature.presentation
 
-import android.content.Intent
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
@@ -17,35 +19,64 @@ import com.example.unsplashproject.R
 import com.example.unsplashproject.api.LATEST
 import com.example.unsplashproject.api.OLDEST
 import com.example.unsplashproject.api.POPULAR
+import com.example.unsplashproject.api.RELEVANT
 import com.example.unsplashproject.feature.domain.entity.Image
 import com.example.unsplashproject.feature.presentation.adapter.ImagesAdapter
 import com.example.unsplashproject.feature.presentation.adapter.PhotoClickListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.imagesRecyclerView
+import kotlinx.android.synthetic.main.activity_search.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
-    private val viewModel: ListImagesViewModel by viewModel()
+class SearchImagesActivity : AppCompatActivity(), PhotoClickListener{
+    private val viewModel: SearchImagesViewModel by viewModel()
     private val adapter = ImagesAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setContentView(R.layout.activity_search)
+        setSupportActionBar(searchToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         imagesRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         imagesRecyclerView.adapter = adapter
 
-        swipeRefresh.setOnRefreshListener {
+        listeners()
+        observeStates()
+    }
+
+    private fun observeStates() {
+        viewModel.status.observe(this, Observer {resources->
+            searchProgressBar.isVisible = resources is Resource.Loading
+            if (resources is Resource.Error){
+                showError(resources.message)
+            }
+        })
+        viewModel.detailsActivity.observe(this, Observer {
+            if (it != null){
+                startActivity(DetailOfImageActivity.getStartIntent(this, it))
+            }
+        })
+    }
+
+    private fun listeners() {
+        searchBtn.setOnClickListener {
+            viewModel.onSearchClicked(queryEt.text.toString())
+            queryEt.hideKeyboard()
+            observePhotos()
+        }
+
+        searchSwipeRefresh.setOnRefreshListener {
             viewModel.updatePhotos()
-            swipeRefresh.isRefreshing = false
+            observePhotos()
+            searchSwipeRefresh.isRefreshing = false
         }
+    }
 
-        searchImageFAB.setOnClickListener{
-            startActivity(Intent(this,SearchImagesActivity::class.java))
-        }
-
-        observe()
+    private fun observePhotos(){
+        viewModel.photos.observe(this, Observer {
+            adapter.submitList(it)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -61,51 +92,35 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onClick(photo: Image) {
-        viewModel.onPhotoClicked(photo)
-    }
-
     private fun showSortingPopupMenu(){
         val view = findViewById<View>(R.id.sort_images) ?: return
         PopupMenu(this, view).run {
-            menuInflater.inflate(R.menu.sort_by_menu, menu)
+            menuInflater.inflate(R.menu.search_sort_by_menu, menu)
 
             setOnMenuItemClickListener {
                 viewModel.setSorting(
                     when (it.itemId) {
                         R.id.latest -> LATEST
-                        R.id.oldest -> OLDEST
-                        else -> POPULAR
+                        else -> RELEVANT
                     }
                 )
+                observePhotos()
                 true
             }
             show()
         }
     }
 
-    private fun observe(){
-        viewModel.photos.observe(this, Observer {
-            adapter.submitList(it)
-        })
-        viewModel.status.observe(this, Observer {resources->
-            mainProgressBar.isVisible = resources is Resource.Loading
-            if (resources is Resource.Error){
-                showError(resources.message)
-            }
-        })
-        viewModel.nextActivity.observe(this, Observer {
-            if (it != null){
-                startActivity(DetailOfImageActivity.getStartIntent(this, it))
-            }
-        })
+    override fun onClick(photo: Image) {
+        viewModel.onPhotoClicked(photo)
     }
 
     private fun showError(error: String){
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
-
-
-
+    fun EditText.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
 }

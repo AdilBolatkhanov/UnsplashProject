@@ -26,6 +26,7 @@
             android:label="Detail"
             android:parentActivityName=".feature.presentation.ListImagesActivity"
             />
+        <activity android:name=".feature.presentation.SearchImagesActivity" />
     </application>
 
 </manifest>

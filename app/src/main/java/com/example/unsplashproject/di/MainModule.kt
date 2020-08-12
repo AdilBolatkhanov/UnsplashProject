@@ -5,11 +5,9 @@ import com.example.unsplashproject.feature.data.local.ImagesLocalDataSource
 import com.example.unsplashproject.feature.data.local.ImagesLocalDataSourceImpl
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSourceImpl
-import com.example.unsplashproject.feature.domain.GetImagesUseCase
-import com.example.unsplashproject.feature.domain.SortImagesUseCase
-import com.example.unsplashproject.feature.domain.UnsplashRepository
-import com.example.unsplashproject.feature.domain.UpdateImageUseCase
+import com.example.unsplashproject.feature.domain.*
 import com.example.unsplashproject.feature.presentation.ListImagesViewModel
+import com.example.unsplashproject.feature.presentation.SearchImagesViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -37,8 +35,39 @@ val mainModule = module {
     factory {
         SortImagesUseCase(repository = get())
     }
+
+    factory {
+        GetSearchImagesUseCase(
+            repository = get()
+        )
+    }
+
+    factory {
+        SortSearchImagesUseCase(
+            repository = get()
+        )
+    }
+
+    factory {
+        UpdateSearchImagesUseCase(
+            repository = get()
+        )
+    }
+
     viewModel {
-        ListImagesViewModel(getImagesUseCase = get(), updateImageUseCase = get(), sortImagesUseCase = get())
+        ListImagesViewModel(
+            getImagesUseCase = get(),
+            updateImageUseCase = get(),
+            sortImagesUseCase = get()
+        )
+    }
+
+    viewModel {
+        SearchImagesViewModel(
+            getSearchImagesUseCase = get(),
+            sortSearchImagesUseCase = get(),
+            updateSearchImagesUseCase = get()
+        )
     }
 
 }

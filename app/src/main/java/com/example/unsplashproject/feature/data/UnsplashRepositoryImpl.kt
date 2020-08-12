@@ -1,6 +1,7 @@
 package com.example.unsplashproject.feature.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.example.unsplashproject.api.LATEST
@@ -8,9 +9,6 @@ import com.example.unsplashproject.feature.data.local.ImagesLocalDataSource
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.domain.UnsplashRepository
 import com.example.unsplashproject.feature.domain.entity.Image
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 const val PER_PAGE = 30
@@ -29,6 +27,9 @@ class UnsplashRepositoryImpl(
             localDataSource
         )
 
+    private var newQuery = ""
+    private var newOrder = LATEST
+
     override fun getImages(): LiveData<PagedList<Image>> {
         return localDataSource.getAllImagesByPage()
             .toLiveData(
@@ -38,10 +39,6 @@ class UnsplashRepositoryImpl(
             )
     }
 
-    override fun updateImages(): LiveData<PagedList<Image>> {
-        boundaryCallback.update()
-        return getImages()
-    }
 
     override fun sortImages(sortBy: String): LiveData<PagedList<Image>> {
         boundaryCallback.setSorting(sortBy)
@@ -49,14 +46,25 @@ class UnsplashRepositoryImpl(
     }
 
 
-    override suspend fun searchImages(
-        clientId: String,
-        query: String,
-        page: Int,
-        perPage: Int,
-        orderBy: String
-    ): List<Image> {
-        return listOf()
+    override fun searchImages(
+        query: String
+    ): LiveData<PagedList<Image>> {
+        newQuery = query
+        return updateSearchImages()
     }
 
+    override fun sortSearchImages(sortBy: String): LiveData<PagedList<Image>> {
+        newOrder = sortBy
+        return updateSearchImages()
+    }
+
+    override fun updateImages(): LiveData<PagedList<Image>> {
+        boundaryCallback.update()
+        return getImages()
+    }
+
+    override fun updateSearchImages(): LiveData<PagedList<Image>> {
+        val dataSourceFactory = ImagesDataSourceFactory(remoteDataSource, newQuery, newOrder)
+        return LivePagedListBuilder(dataSourceFactory, config).build()
+    }
 }
