@@ -119,7 +119,7 @@ class SearchImagesActivity : AppCompatActivity(), PhotoClickListener{
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
-    fun EditText.hideKeyboard() {
+    private fun EditText.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
