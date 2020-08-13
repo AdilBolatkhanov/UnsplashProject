@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 
 class SearchDataSource(
     private val remoteDataSource: ImagesRemoteDataSource,
-    private val newQuery: String,
-    private val newOrder: String
-):PageKeyedDataSource<Int, Image>() {
+    newQuery: String,
+    newOrder: String
+) : PageKeyedDataSource<Int, Image>() {
 
-    private var query =newQuery
+    private var query = newQuery
     private var orderBy = newOrder
 
 
@@ -58,7 +58,7 @@ class SearchDataSource(
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Image>) {
     }
 
-    private fun isNetworkConnected():Boolean{
+    private fun isNetworkConnected(): Boolean {
         val cm = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnected

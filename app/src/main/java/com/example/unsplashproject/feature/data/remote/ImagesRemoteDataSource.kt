@@ -6,21 +6,32 @@ import com.example.unsplashproject.feature.data.dto.json_search_model.SearchRemo
 import com.example.unsplashproject.feature.data.dto.json_search_model.SearchResult
 
 interface ImagesRemoteDataSource {
-    suspend fun getPhotos(clientId: String, page: Int, perPage:Int, orderBy: String):List<ImageRemoteItem>
+    suspend fun getPhotos(
+        clientId: String,
+        page: Int,
+        perPage: Int,
+        orderBy: String
+    ): List<ImageRemoteItem>
 
-    suspend fun searchPhotos(clientId: String,query: String, page: Int, perPage: Int, orderBy: String): SearchRemoteDTO
+    suspend fun searchPhotos(
+        clientId: String,
+        query: String,
+        page: Int,
+        perPage: Int,
+        orderBy: String
+    ): SearchRemoteDTO
 }
 
 class ImagesRemoteDataSourceImpl(
     private val unsplashApi: UnsplashApi
-):ImagesRemoteDataSource{
+) : ImagesRemoteDataSource {
     override suspend fun getPhotos(
         clientId: String,
         page: Int,
         perPage: Int,
         orderBy: String
     ): List<ImageRemoteItem> {
-        return unsplashApi.getImages(clientId, page, perPage,orderBy)
+        return unsplashApi.getImages(clientId, page, perPage, orderBy)
     }
 
     override suspend fun searchPhotos(
@@ -29,8 +40,8 @@ class ImagesRemoteDataSourceImpl(
         page: Int,
         perPage: Int,
         orderBy: String
-    ):SearchRemoteDTO {
-        return unsplashApi.searchImages(clientId, page, query, perPage,orderBy)
+    ): SearchRemoteDTO {
+        return unsplashApi.searchImages(clientId, page, query, perPage, orderBy)
     }
 
 }

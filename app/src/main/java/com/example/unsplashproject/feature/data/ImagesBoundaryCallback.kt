@@ -17,7 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class ImagesBoundaryCallback (
+class ImagesBoundaryCallback(
     private val remoteDataSource: ImagesRemoteDataSource,
     private val localDataSource: ImagesLocalDataSource
 ) : PagedList.BoundaryCallback<Image>() {
@@ -38,14 +38,14 @@ class ImagesBoundaryCallback (
         }
     }
 
-    fun update(){
+    fun update() {
         GlobalScope.launch(Dispatchers.IO) {
             page = 1
             localDataSource.deleteAllImages()
         }
     }
 
-    fun setSorting(sortBy: String){
+    fun setSorting(sortBy: String) {
         GlobalScope.launch(Dispatchers.IO) {
             page = 1
             orderBy = sortBy
@@ -70,7 +70,7 @@ class ImagesBoundaryCallback (
         }
     }
 
-    private fun isNetworkConnected():Boolean{
+    private fun isNetworkConnected(): Boolean {
         val cm = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
         return activeNetwork != null && activeNetwork.isConnected

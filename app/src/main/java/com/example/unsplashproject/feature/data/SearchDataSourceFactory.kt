@@ -11,13 +11,15 @@ class SearchDataSourceFactory(
     private val remoteDataSource: ImagesRemoteDataSource,
     private val query: String,
     private val orderBy: String = RELEVANT
-) : DataSource.Factory<Int, Image>(){
+) : DataSource.Factory<Int, Image>() {
     private val sourceLiveData = MutableLiveData<SearchDataSource>()
-    private var latestSource : SearchDataSource? = null
+    private var latestSource: SearchDataSource? = null
 
     override fun create(): DataSource<Int, Image> {
-        latestSource = SearchDataSource(remoteDataSource,
-        query, orderBy)
+        latestSource = SearchDataSource(
+            remoteDataSource,
+            query, orderBy
+        )
         sourceLiveData.postValue(latestSource)
         return latestSource as SearchDataSource
     }

@@ -8,10 +8,10 @@ import org.koin.dsl.module
 
 val dbModule = module {
     single {
-        Room.databaseBuilder(androidApplication(), AppDatabase::class.java,"unsplash-database")
+        Room.databaseBuilder(androidApplication(), AppDatabase::class.java, "unsplash-database")
             .build()
     }
-    fun getListImagesDao(database: AppDatabase):ListImagesDao{
+    fun getListImagesDao(database: AppDatabase): ListImagesDao {
         return database.listImagesDao()
     }
     single {

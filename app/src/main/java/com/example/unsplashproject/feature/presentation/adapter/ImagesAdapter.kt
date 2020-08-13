@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.image_item.view.*
 
 class ImagesAdapter(
     private val clickListener: PhotoClickListener
-):PagedListAdapter<Image, ImagesAdapter.ViewHolder>(diffCallback) {
+) : PagedListAdapter<Image, ImagesAdapter.ViewHolder>(diffCallback) {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -25,7 +25,7 @@ class ImagesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position)?.let {image->
+        getItem(position)?.let { image ->
             Glide.with(holder.itemView.context)
                 .load(image.thumb_url)
                 .into(holder.itemView.imageView)
@@ -35,9 +35,10 @@ class ImagesAdapter(
         }
     }
 
-    companion object{
-        private val diffCallback = object: DiffUtil.ItemCallback<Image>() {
-            override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean = oldItem == newItem
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<Image>() {
+            override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean =
+                oldItem == newItem
 
             override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean {
                 return oldItem.id == newItem.id
@@ -46,6 +47,6 @@ class ImagesAdapter(
     }
 }
 
-interface PhotoClickListener{
+interface PhotoClickListener {
     fun onClick(photo: Image)
 }

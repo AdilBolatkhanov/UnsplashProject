@@ -21,7 +21,7 @@ fun ImageRemoteItem.toDomainModel(): Image {
     )
 }
 
-fun SearchResult.toDomainModel(): Image{
+fun SearchResult.toDomainModel(): Image {
     val location = if (user.location == null) "Not specified" else user.location.toString()
     return Image(
         id = id,

@@ -15,7 +15,7 @@ class ListImagesViewModel(
     private val getImagesUseCase: GetImagesUseCase,
     private val updateImageUseCase: UpdateImageUseCase,
     private val sortImagesUseCase: SortImagesUseCase
-) : ViewModel(){
+) : ViewModel() {
     lateinit var photos: LiveData<PagedList<Image>>
 
     val status: LiveData<Resource<String>> get() = _status
@@ -33,32 +33,32 @@ class ListImagesViewModel(
         }
     }
 
-    fun updatePhotos(){
+    fun updatePhotos() {
         getPhotos {
             updateImageUseCase()
         }
     }
 
-    fun setSorting(sorting: String){
+    fun setSorting(sorting: String) {
         getPhotos {
             sortImagesUseCase(sorting)
         }
     }
 
-    fun onPhotoClicked(photo: Image){
+    fun onPhotoClicked(photo: Image) {
         _nextActivity.value = photo
     }
 
-    fun onSearchBtnClicked(){
+    fun onSearchBtnClicked() {
         _searchActivity.value = true
     }
 
-    private fun getPhotos(action: () ->  LiveData<PagedList<Image>>){
+    private fun getPhotos(action: () -> LiveData<PagedList<Image>>) {
         _status.value = Resource.Loading
-        try{
+        try {
             photos = action()
             _status.value = Resource.Success
-        }catch (throwable: Throwable){
+        } catch (throwable: Throwable) {
             _status.value = Resource.Error(throwable.message ?: "Something went wrong")
         }
     }
@@ -67,6 +67,6 @@ class ListImagesViewModel(
 
 sealed class Resource<out T> {
     object Loading : Resource<Nothing>()
-    object Success: Resource<Nothing>()
+    object Success : Resource<Nothing>()
     class Error<T>(val message: String) : Resource<T>()
 }

@@ -21,7 +21,7 @@ import com.example.unsplashproject.feature.presentation.adapter.PhotoClickListen
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
+class ListImagesActivity : AppCompatActivity(), PhotoClickListener {
     private val viewModel: ListImagesViewModel by viewModel()
     private val adapter = ImagesAdapter(this)
 
@@ -31,7 +31,8 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        imagesRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        imagesRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         imagesRecyclerView.adapter = adapter
 
         listeners()
@@ -45,7 +46,7 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.sort_images){
+        if (item.itemId == R.id.sort_images) {
             showSortingPopupMenu()
             return true
         }
@@ -67,7 +68,7 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
         }
     }
 
-    private fun showSortingPopupMenu(){
+    private fun showSortingPopupMenu() {
         val view = findViewById<View>(R.id.sort_images) ?: return
         PopupMenu(this, view).run {
             menuInflater.inflate(R.menu.sort_by_menu, menu)
@@ -86,29 +87,29 @@ class ListImagesActivity : AppCompatActivity(),PhotoClickListener {
         }
     }
 
-    private fun observe(){
+    private fun observe() {
         viewModel.photos.observe(this, Observer {
             adapter.submitList(it)
         })
-        viewModel.status.observe(this, Observer {resources->
+        viewModel.status.observe(this, Observer { resources ->
             mainProgressBar.isVisible = resources is Resource.Loading
-            if (resources is Resource.Error){
+            if (resources is Resource.Error) {
                 showError(resources.message)
             }
         })
         viewModel.nextActivity.observe(this, Observer {
-            if (it != null){
+            if (it != null) {
                 startActivity(DetailOfImageActivity.getStartIntent(this, it))
             }
         })
         viewModel.searchActivity.observe(this, Observer {
-            if (it){
+            if (it) {
                 startActivity(Intent(this, SearchImageActivity::class.java))
             }
         })
     }
 
-    private fun showError(error: String){
+    private fun showError(error: String) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 

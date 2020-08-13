@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-class ApiInterceptor: Interceptor {
+class ApiInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
             .newBuilder()
@@ -24,8 +24,8 @@ class ApiInterceptor: Interceptor {
 }
 
 val networkModule = module {
-    val connectTimeout : Long = 40
-    val readTimeout : Long  = 40
+    val connectTimeout: Long = 40
+    val readTimeout: Long = 40
 
     fun provideHttpClient(): OkHttpClient {
         val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
@@ -50,11 +50,11 @@ val networkModule = module {
 
     single { provideHttpClient() }
     single {
-        val baseUrl="https://api.unsplash.com/"
-        provideRetrofit(get(),baseUrl)
+        val baseUrl = "https://api.unsplash.com/"
+        provideRetrofit(get(), baseUrl)
     }
 
-    fun provideUnsplashApi(retrofit: Retrofit):UnsplashApi{
+    fun provideUnsplashApi(retrofit: Retrofit): UnsplashApi {
         return retrofit.create(UnsplashApi::class.java)
     }
 

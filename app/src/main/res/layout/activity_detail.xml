@@ -56,15 +56,15 @@
             android:id="@+id/downloadBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_centerHorizontal="true"
-            android:text="Download Image"
-            android:drawablePadding="5dp"
             android:layout_below="@id/descriptionTextView"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:background="@drawable/download_btn"
             android:drawableLeft="@drawable/ic_baseline_cloud_download_24"
-            android:textColor="@android:color/white"
-            android:background="@drawable/download_btn"/>
+            android:drawablePadding="5dp"
+            android:padding="10dp"
+            android:text="Download Image"
+            android:textColor="@android:color/white" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/photoImageView"

@@ -25,7 +25,7 @@ interface ListImagesDao {
     suspend fun getImagesCount(): Int
 
     @Query("DELETE FROM $ListImagesTable")
-   suspend  fun deleteAll()
+    suspend fun deleteAll()
 
 
 }

@@ -10,7 +10,7 @@ import org.koin.core.context.startKoin
 
 
 class App : Application() {
-    companion object{
+    companion object {
         lateinit var context: Context
     }
 

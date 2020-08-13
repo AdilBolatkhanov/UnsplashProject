@@ -15,7 +15,7 @@ interface ImagesLocalDataSource {
 
 class ImagesLocalDataSourceImpl(
     private val listImagesDao: ListImagesDao
-):ImagesLocalDataSource{
+) : ImagesLocalDataSource {
     override fun getAllImagesByPage(): DataSource.Factory<Int, Image> =
         listImagesDao.getAllImagesByPage()
 

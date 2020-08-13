@@ -13,7 +13,7 @@ class SearchImageViewModel(
     private val searchImagesUseCase: SearchImagesUseCase,
     private val updateSearchImagesUseCase: UpdateSearchImagesUseCase,
     private val sortSearchImagesUseCase: SortSearchImagesUseCase
-):ViewModel() {
+) : ViewModel() {
     lateinit var photos: LiveData<PagedList<Image>>
 
     val status: LiveData<Resource<String>> get() = _status
@@ -23,34 +23,34 @@ class SearchImageViewModel(
     private val _nextActivity = MutableLiveData<Image>()
 
 
-    fun searchImages(query: String){
+    fun searchImages(query: String) {
         search {
             searchImagesUseCase(query)
         }
     }
 
-    fun setSoring(sorting: String){
+    fun setSoring(sorting: String) {
         search {
             sortSearchImagesUseCase(sorting)
         }
     }
 
-    fun updateImages(){
+    fun updateImages() {
         search {
             updateSearchImagesUseCase()
         }
     }
 
-    fun onPhotoClicked(photo: Image){
+    fun onPhotoClicked(photo: Image) {
         _nextActivity.value = photo
     }
 
-    private fun search(action: () ->  LiveData<PagedList<Image>>){
+    private fun search(action: () -> LiveData<PagedList<Image>>) {
         _status.value = Resource.Loading
-        try{
+        try {
             photos = action()
             _status.value = Resource.Success
-        }catch (throwable: Throwable){
+        } catch (throwable: Throwable) {
             _status.value = Resource.Error(throwable.message ?: "Something went wrong")
         }
     }

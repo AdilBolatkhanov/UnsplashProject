@@ -9,7 +9,7 @@ import com.example.unsplashproject.feature.domain.entity.Image
 class GetImagesUseCase(
     private val repository: UnsplashRepository
 ) {
-    operator fun invoke() : LiveData<PagedList<Image>> {
+    operator fun invoke(): LiveData<PagedList<Image>> {
         return repository.getImages()
     }
 

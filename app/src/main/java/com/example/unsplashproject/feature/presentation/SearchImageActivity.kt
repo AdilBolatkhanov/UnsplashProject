@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.search_activity.swipeRefresh
 import kotlinx.android.synthetic.main.search_activity.toolbar
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
+class SearchImageActivity : AppCompatActivity(), PhotoClickListener {
     private val viewModel: SearchImageViewModel by viewModel()
     private val adapter = ImagesAdapter(this)
 
@@ -42,7 +42,8 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        imagesRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        imagesRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         imagesRecyclerView.adapter = adapter
 
         listeners()
@@ -55,7 +56,7 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.sort_images){
+        if (item.itemId == R.id.sort_images) {
             showSortingPopupMenu()
             return true
         }
@@ -66,7 +67,7 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
         viewModel.onPhotoClicked(photo)
     }
 
-    private fun showSortingPopupMenu(){
+    private fun showSortingPopupMenu() {
         val view = findViewById<View>(R.id.sort_images) ?: return
         PopupMenu(this, view).run {
             menuInflater.inflate(R.menu.search_sort_by, menu)
@@ -85,7 +86,7 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
         }
     }
 
-    private fun listeners(){
+    private fun listeners() {
         swipeRefresh.setOnRefreshListener {
             viewModel.updateImages()
             observeItems()
@@ -99,15 +100,15 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
         }
     }
 
-    private fun observe(){
-        viewModel.status.observe(this, Observer {resources->
+    private fun observe() {
+        viewModel.status.observe(this, Observer { resources ->
             mainProgressBar.isVisible = resources is Resource.Loading
-            if (resources is Resource.Error){
+            if (resources is Resource.Error) {
                 showError(resources.message)
             }
         })
         viewModel.nextActivity.observe(this, Observer {
-            if (it != null){
+            if (it != null) {
                 startActivity(DetailOfImageActivity.getStartIntent(this, it))
             }
         })
@@ -120,7 +121,7 @@ class SearchImageActivity: AppCompatActivity(), PhotoClickListener {
     }
 
 
-    private fun showError(error: String){
+    private fun showError(error: String) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 

@@ -113,7 +113,6 @@ data class Type(
 )
 
 
-
 data class Urls(
     val full: String,
     val raw: String,

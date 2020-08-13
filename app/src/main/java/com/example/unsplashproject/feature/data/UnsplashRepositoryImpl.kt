@@ -22,9 +22,9 @@ class UnsplashRepositoryImpl(
     private val localDataSource: ImagesLocalDataSource
 ) : UnsplashRepository {
     private val config = PagedList.Config.Builder()
-            .setPageSize(PER_PAGE)
-            .setEnablePlaceholders(false)
-            .build()
+        .setPageSize(PER_PAGE)
+        .setEnablePlaceholders(false)
+        .build()
     private val boundaryCallback =
         ImagesBoundaryCallback(
             remoteDataSource,
@@ -66,7 +66,7 @@ class UnsplashRepositoryImpl(
     }
 
     override fun updateSearchImages(): LiveData<PagedList<Image>> {
-        val searchDataSourceFactory = SearchDataSourceFactory(remoteDataSource,newQuery,newOrder)
+        val searchDataSourceFactory = SearchDataSourceFactory(remoteDataSource, newQuery, newOrder)
         return LivePagedListBuilder<Int, Image>(searchDataSourceFactory, config).build()
     }
 
