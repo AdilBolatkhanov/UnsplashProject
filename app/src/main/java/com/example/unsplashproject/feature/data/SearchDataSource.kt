@@ -5,13 +5,12 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.paging.PageKeyedDataSource
 import com.example.unsplashproject.api.CLIENT_ID
-import com.example.unsplashproject.api.RELEVANT
 import com.example.unsplashproject.feature.App
 import com.example.unsplashproject.feature.data.dto.mappers.toDomainModel
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.domain.entity.Image
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class SearchDataSource(
@@ -29,7 +28,7 @@ class SearchDataSource(
         callback: LoadInitialCallback<Int, Image>
     ) {
         if (isNetworkConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+            CoroutineScope(Dispatchers.IO).launch  {
                 val searchResult: List<Image?>? = remoteDataSource
                     .searchPhotos(CLIENT_ID, query, 1, params.requestedLoadSize, orderBy)
                     .results.map {
@@ -42,7 +41,7 @@ class SearchDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Image>) {
         if (isNetworkConnected()) {
-            GlobalScope.launch(Dispatchers.IO) {
+            CoroutineScope(Dispatchers.IO).launch  {
                 val searchResult = remoteDataSource
                     .searchPhotos(CLIENT_ID, query, params.key, params.requestedLoadSize, orderBy)
                 val searchList = searchResult.results.map {

@@ -4,15 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.example.unsplashproject.api.LATEST
 import com.example.unsplashproject.api.RELEVANT
 import com.example.unsplashproject.feature.data.local.ImagesLocalDataSource
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.domain.UnsplashRepository
 import com.example.unsplashproject.feature.domain.entity.Image
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 const val PER_PAGE = 30

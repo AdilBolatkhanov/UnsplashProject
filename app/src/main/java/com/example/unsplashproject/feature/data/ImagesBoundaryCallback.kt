@@ -12,8 +12,8 @@ import com.example.unsplashproject.feature.data.dto.mappers.toDomainModel
 import com.example.unsplashproject.feature.data.local.ImagesLocalDataSource
 import com.example.unsplashproject.feature.data.remote.ImagesRemoteDataSource
 import com.example.unsplashproject.feature.domain.entity.Image
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -39,14 +39,14 @@ class ImagesBoundaryCallback(
     }
 
     fun update() {
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             page = 1
             localDataSource.deleteAllImages()
         }
     }
 
     fun setSorting(sortBy: String) {
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch  {
             page = 1
             orderBy = sortBy
             localDataSource.deleteAllImages()
@@ -59,7 +59,7 @@ class ImagesBoundaryCallback(
         Log.d("ImagesBoundaryCallback", "page: $page ----------$orderBy")
 
         isRequestingInProgress = true
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             val list: List<Image> =
                 remoteDataSource.getPhotos(CLIENT_ID, page, PER_PAGE, orderBy).map {
                     it.toDomainModel()
