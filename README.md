@@ -13,7 +13,7 @@ This allows for easier testing and maintenance and recommended for bigger projec
 * Kotlin Coroutines for background operations
 * Koin as dependency injection
 * Paging Library helps you load and display small chunks of data at a time. Loading partial data on demand reduces usage of network bandwidth and system resources.
-* Network: Retrofit
+* Network: Retrofit in order to simplify requesting data from REST API
 * A presentation layer that contains a fragment (View) and a ViewModel per screen (or feature).
 * A data layer with a repository and two data sources (local using Room and remote using Retrofit)
 
